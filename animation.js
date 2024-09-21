@@ -8,25 +8,29 @@
         noteTimes = txt.split(/[\r\t\n]/);
         noteTimes = noteTimes.filter(function (e) { return e != "" });
         for (let index = 0; index < noteTimes.length; index++) {
-            noteTimes[index] = Math.round(noteTimes[index]*100)/100;
+            noteTimes[index] = Math.round(noteTimes[index] * 100) / 100;
         }
         console.log(noteTimes);
     };
     getFile();
     let song = new Audio("Bonetrousle.mp3");
     document.addEventListener("keyup", regKey);
+    let clock = document.createElement("span");
+
+    clock.classList.add('clock');
+    body.appendChild(clock);
     let playing = false;
-    let currTime = 0;
-    let noteNumber = 0;
     function regKey(e) {
         if (e.code == "Space") {
             if (!playing) {
+                let noteNumber = 0;
                 function countUp() {
-                    currTime++;
-                    if (noteTimes.includes(Math.round(((currTime/1000)*100))/100)) {
-                        console.log("Hit note: " + (currTime/1000) + "/" + noteTimes[noteNumber]);
-                        noteNumber++;
+                    if (noteTimes.includes(Math.round(((song.currentTime * 100)) / 100))) {
+                        clock.innerHTML = ("Hit note: " + (Math.round(song.currentTime*100)/100) + "/" + noteTimes[noteNumber]);
+                        noteNumber = noteNumber + 2;
                     }
+                    console.log("Hit note: " + (Math.round(song.currentTime*100)/100) + "/" + noteTimes[noteNumber]);
+                    console.log(noteNumber);
                 }
                 song.play();
                 let timer = setInterval(countUp, 1);
