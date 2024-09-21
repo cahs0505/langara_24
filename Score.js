@@ -34,11 +34,16 @@ function drawNote(){
     ctx.drawImage(pic, column, notePoints.y);
 }
 
+function drawStreak(){
+    ctx.font = "40pt Comic Sans MS"
+    ctx.fillText("Streak: "+count, 1900, 80)
+}
 
 function redraw(){
     drawBackground();
     drawNote();
     drawTarget();
+    drawStreak();
 }
 function checkCollision(){
     if (notePoints.y == target){
@@ -87,7 +92,6 @@ function executeProgram(){
         notePoints.y+=20;
         redraw();
     }
-
     if (count == -20){
         stopProgram(e.keyCode = 69);
         ctx.clearRect(0,0, canvas.width, canvas.height);
