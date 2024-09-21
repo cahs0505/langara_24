@@ -1,50 +1,65 @@
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 
-function points (x){
-    this.x = x;
+function points (y){
+    this.y = y;
 }
 
-var x = 0;
-const row = 0;
-const target = 0;
-let notePoints = new points(x);
+var y = 0;
+const column = 960;
+const target = 1060;
+let notePoints = new points(y);
 
 var count = 0;
 
 
 var songLength = 58;
-var countDown = 0;
+var startTime = Date.now();
+
+function drawBackground(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let pic = new Image();
+    pic.src = "";
+    ctx.drawImage(pic, canvas.width, canvas.height)
+}
 function drawTarget(){
     let pic = new Image();
     pic.src = "";
-    ctx.drawImage(pic, target, row);
+    ctx.drawImage(pic, column, target);
 }
 
 function drawNote(){
     let pic = new Image();
     pic.src = "";
-    ctx.drawImage(pic, notePoints.x, row);
+    ctx.drawImage(pic, column, notePoints.y);
 }
 
+
+function redraw(){
+    drawBackground();
+    drawNote();
+    drawTarget();
+}
 function checkCollision(){
-    if (notePoints.x == target){
-        return true;
+    if (notePoints.y == target){
+        return 0;
     }
-    else {
-        return false;
+    else if(notePoints.y >= target) {
+        return -1;
+    }
+    else{
+        return 1;
     }
 }
 
 function pointCalculator(e){
     if (e.keyCode === 32){
         var valid = checkCollision();
-        if (valid == true){
-            count++;
+        if (valid == 0){
+            count ++;
         }
-        else{
+        else if(valid == -1){
             count--;
-            loseCon();
         }
 
     }
@@ -68,24 +83,50 @@ function stopProgram(e){
 }
 
 function executeProgram(){
-    if (count > -3 ){}
-
-    if (count == -3){
-        alert("Game over, you loose");
-        stopProgram(e.keyCode = 69);
+    if (count > -20  && (Date.now()-startTime)/1000 < songLength){
+        notePoints.y+=20;
+        redraw();
     }
-    if(countDown == songLength){
+
+    if (count == -20){
         stopProgram(e.keyCode = 69);
-        ctx.clearRect(0,0, 400, 600);
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        ctx.font="90pt Comic Sans MS";
+        ctx.fillText("You Loose",960, 540);
+    }
+    if((Date.now()-startTime)/1000 == songLength){
         
         let score = (count/197)*100;
         if (score < 40 ){
-            
+            stopProgram(e.keyCode = 69);
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            ctx.font="90pt Comic Sans MS";
+            ctx.fillText("Congragulations, You earned a D rank, you have hit "+count+"/197 notes",960, 540);
         }
-        else if (score < 60){}
-        else if (score < 80){}
-        else if (score < 100){}
-        else{}
+        else if (score < 60){
+            stopProgram(e.keyCode = 69);
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            ctx.font="90pt Comic Sans MS";
+            ctx.fillText("Congragulations, You earned a C rank, you have hit "+count+"/197 notes",960, 540);       
+        }
+        else if (score < 80){
+            stopProgram(e.keyCode = 69);
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            ctx.font="90pt Comic Sans MS";
+            ctx.fillText("Congragulations, You earned a B rank, you have hit "+count+"/197 notes",960, 540);
+        }
+        else if (score < 100){
+            stopProgram(e.keyCode = 69);
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            ctx.font="90pt Comic Sans MS";
+            ctx.fillText("Congragulations, You earned a A rank, you have hit "+count+"/197 notes",960, 540);
+        }
+        else{
+            stopProgram(e.keyCode = 69);
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            ctx.font="50pt Comic Sans MS";
+            ctx.fillText("Congragulations, You earned a S rank, Flawless Score",960, 540);
+        }
     }
 }
 
