@@ -25,11 +25,11 @@
             if (!playing) {
                 let noteNumber = 0;
                 function countUp() {
-                    if (noteTimes.includes(Math.round(((song.currentTime * 100)) / 100))) {
+                    if (noteNumber < noteTimes.length){
+                    if (noteTimes[noteNumber] == (Math.round(((song.currentTime * 100))) / 100) || noteTimes[noteNumber] == ((Math.round(((song.currentTime * 100))) / 100) + 0.01) || noteTimes[noteNumber] == ((Math.round(((song.currentTime * 100))) / 100) - 0.01)) {
                         clock.innerHTML = ("Hit note: " + (Math.round(song.currentTime*100)/100) + "/" + noteTimes[noteNumber]);
                         noteNumber = noteNumber + 2;
-                    }
-                    console.log("Hit note: " + (Math.round(song.currentTime*100)/100) + "/" + noteTimes[noteNumber]);
+                    }}
                     console.log(noteNumber);
                 }
                 song.play();
