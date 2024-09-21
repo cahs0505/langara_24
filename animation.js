@@ -7,6 +7,9 @@
         let txt = await file.text();
         noteTimes = txt.split(/[\r\t\n]/);
         noteTimes = noteTimes.filter(function (e) { return e != "" });
+        for (let index = 0; index < noteTimes.length; index++) {
+            noteTimes[index] = Math.round(noteTimes[index]*100)/100;
+        }
         console.log(noteTimes);
     };
     getFile();
@@ -20,11 +23,10 @@
             if (!playing) {
                 function countUp() {
                     currTime++;
-                    if (noteTimes.includes(currTime / 1000)) {
-                        console.log("Hit note: " + currTime + "/" + noteTimes[noteNumber]);
+                    if (noteTimes.includes(Math.round(((currTime/1000)*100))/100)) {
+                        console.log("Hit note: " + (currTime/1000) + "/" + noteTimes[noteNumber]);
                         noteNumber++;
                     }
-                    console.log(song.currentTime);
                 }
                 song.play();
                 let timer = setInterval(countUp, 1);
