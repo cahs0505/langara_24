@@ -1,0 +1,54 @@
+/* Global styling for the body */
+body {
+    font-family: 'Noto Sans', sans-serif; /* Noto font for consistency */
+    background-color: #1e1e2f; /* Dark background, giving a concert-like atmosphere */
+    color: #ffffff; /* White text for good contrast */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height */
+    flex-direction: column;
+    background-image: url('stage.png');
+    background-size: cover; /* This makes the background cover the entire page */
+    background-position: center; /* This centers the image */
+    background-repeat: no-repeat; /* This prevents the image from repeating */
+}
+
+/* Welcome message styling */
+.welcome-message {
+    font-size: 2em; /* Larger text for the welcome message */
+    margin-bottom: 20px; /* Space below the message */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Adds a soft shadow for a glowing effect */
+    background: rgba(0, 0, 0, 0.5); /* Transparent black background behind the text */
+    padding: 20px; /* Padding for spacing */
+    border-radius: 10px; /* Rounded corners for the message box */
+}
+
+/* Highscore text styling */
+.highscore {
+    font-size: 1.5em; /* Font size for the high score */
+    color: #ffcc00; /* Golden yellow color to highlight the high score */
+    font-weight: bold;
+}
+
+/* Button styling */
+button {
+    background-color: #2e7d32; /* Green button for contrast */
+    color: white; /* White text for the button */
+    padding: 15px 30px;
+    font-size: 1.5em;
+    border-radius: 10px; /* Smooth, rounded button edges */
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-top: 30px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Adding depth to the button */
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #1b5e20; /* Darker green when hovered */
+    transform: translateY(-5px); /* Slight upward animation on hover */
+}

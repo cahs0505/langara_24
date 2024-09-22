@@ -1,0 +1,75 @@
+
+body {
+    background-color: #ffffff;
+    color: #333333;
+    font-family: 'Georgia', serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('sheet_music_background.jpg'); /* Subtle sheet music background */
+    background-size: cover;
+    background-position: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #3f51b5;
+    text-shadow: 1px 1px #999999;
+    margin-bottom: 30px;
+    font-family: 'Lucida Console', monospace;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    border: 2px solid #3f51b5;
+    margin-bottom: 20px;
+    background-color: #f3f4f6;
+    width: 300px;
+}
+
+button {
+    background-color: #673ab7;
+    color: white;
+    padding: 12px 24px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Verdana', sans-serif;
+}
+
+button:hover {
+    background-color: #7e57c2;
+}
+
+button:active {
+    background-color: #512da8;
+    transform: scale(0.95);
+}
+button.back {
+    position: absolute;
+    bottom: 40px;    /* Adjust this value to fine-tune the vertical positioning */
+    left: 20px;   /* Adjust this value to fine-tune the horizontal positioning */
+    padding: 10px 20px; /* Adjust padding if necessary */
+    background-color: #673ab7;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Verdana', sans-serif;
+}
+
+button.back:hover {
+    background-color: #7e57c2;
+}
+
+button.back:active {
+    background-color: #512da8;
+    transform: scale(0.95);
+}

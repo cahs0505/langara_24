@@ -1,0 +1,100 @@
+/* Background with the GIF */
+body {
+    font-family: 'Noto Sans', sans-serif; 
+    background-image: url('https://i.pinimg.com/originals/25/fb/a8/25fba81675f3b5afbbe6f69b0f9c7b56.gif');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    font-size: 3em;
+    color: #94004cc6;
+    text-shadow: 2px 2px #ffffff;
+    margin-bottom: 40px;
+}
+
+.transparent-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 17.5%; 
+    width: 65%; 
+    background-color: rgba(0, 0, 0, 0.8); 
+    z-index: 1; 
+}
+
+.menu {
+    position: relative;
+    z-index: 2; 
+    text-align: center;
+}
+
+.top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-right button {
+    font-family: 'Noto Sans', sans-serif; 
+    background-color: #2e7d32;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin: 5px 0; 
+    transition: all 0.3s ease-in-out;
+}
+
+.top-right button:hover {
+    background-color: #d18708;
+    transform: scale(1.05);
+}
+
+.top-right button:active {
+    transform: scale(0.95);
+}
+
+
+.button-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-column button {
+    font-family: 'Noto Sans', sans-serif; 
+    background-color: #2e7d32;
+    color: #ffffff;
+    padding: 15px 30px;
+    font-size: 1.5em;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin: 10px 0; 
+}
+
+.button-column button:hover {
+    background-color: #d18708;
+    transform: scale(1.1);
+}
+
+.button-column button:active {
+    transform: scale(0.95);
+}
+
+
+.quit-button {
+    background-color: #c62828;
+}
