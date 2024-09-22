@@ -7,70 +7,195 @@
     <style>
         canvas {
             border:1px solid #d3d3d3;
-            background-color: #f1f1f1;
+            background-color: #211951
         }
     </style>
     <title>Playing</title>
 </head>
 <body>
 </body>
-<!-- <script src="animation.js"></script> -->
+
  <script>
 
     function startGame() {
+
+        //game timer, used to sync upeveryting
+        timer=0.0;
+        setInterval(()=>{
+            timer += 0.01;
+        },10) 
+
+        //spawn time for every note, need to be synced
+        notes = [0.494354, 0.716916, 1.047800, 1.461406, 1.847438, 2.261043, 
+        2.674649, 3.060680, 3.446712, 3.860317, 4.246349, 4.632381, 5.045986,
+         5.459592, 5.845624, 6.259229, 6.645261, 7.031293, 7.444898, 7.637914, 
+         7.886077, 8.299683, 8.492698, 8.658141, 9.071746, 9.292336, 9.485351, 
+         9.678367, 9.871383, 10.064399, 10.284989, 10.671020, 10.836463, 11.057052, 
+         11.277642, 11.470658, 11.691247, 11.884263, 12.270295, 13.262948, 13.455964, 
+         13.676553, 13.897143, 14.255601, 14.641633, 14.834649, 15.055238, 15.468844, 
+         15.661859, 15.882449, 16.075465, 16.268481, 16.489070, 16.682086, 17.068118, 
+         17.261134, 17.481723, 17.674739, 17.867755, 18.088345, 18.281361, 18.667392, 
+         19.632472, 19.853061, 20.073651, 20.294240, 20.625125, 21.066304, 21.286893, 
+         21.479909, 21.865941, 22.058957, 22.307120, 22.500136, 22.693152, 22.886168, 
+         23.079184, 23.465215, 23.685805, 23.878821, 24.099410, 24.292426, 24.485442, 
+         24.678458, 25.036916, 26.057143, 26.250159, 26.470748, 26.691338, 27.049796, 
+         27.435828, 27.628844, 27.849433, 28.235465, 28.428481, 28.676644, 28.869660, 
+         29.090249, 29.283265, 29.476281, 29.862313, 30.055329, 30.275918, 30.496508, 
+         30.689524, 30.882540, 31.075556, 31.461587, 32.426667, 32.647256, 32.867846, 33.088435, 33.474467, 33.860499, 34.081088, 34.301678, 34.660136, 34.880726, 35.073741, 35.294331, 35.514921, 35.707937, 36.121542, 36.286984, 36.645442, 36.838458, 37.059048, 37.445079, 37.638095, 37.858685, 38.851338, 39.071927, 39.264943, 39.485533, 39.843991, 40.230023, 40.450612, 40.671202, 41.084807, 41.277823, 41.498413, 41.691429, 41.912018, 42.132608, 42.628934, 42.766803, 43.070113, 43.263129, 43.483719, 43.676735, 43.897324, 44.090340, 44.338503, 45.248435, 45.469025, 45.662041, 45.827483, 46.268662, 46.654694, 46.875283, 47.068299, 47.454331, 47.674921, 47.867937, 48.088526, 48.309116, 48.667574, 48.888163, 49.108753, 49.467211, 49.660227, 49.880816, 50.266848, 50.487438, 50.708027, 51.645533, 51.866122, 52.059138, 52.279728, 52.665760, 53.079365, 53.272381, 53.492971, 53.851429, 54.072018, 54.292608, 54.651066, 54.844082, 55.092245, 55.312834, 55.505850, 55.836735, 56.222766, 56.443356, 56.663946, 57.022404, 57.380862]
+        
+        //game data
+        spawned_notes=[]
+        past_notes = []
+        effects = []
+        target_line_y = 400
+        
+
         myGameArea.start();
 
-        notes=[]
-
-        setInterval(()=>{
-            notes.push(new Component(30, 30, "blue", 250, 10));
-        },2000)
         
-        
-        
-        target_line = new Component(500, 5, "red", 0, 400);
     }
 
-    function Component(width, height, color, x, y) {
+    //the actual note
+    function Component(width, height, color, x, y, spawnTime, lane) {
         this.width = width;
         this.height = height;
-        this.speedX = 0;
         this.speedY = 0;
+        this.color = color
         this.x = x;
         this.y = y;
         this.hit = false;
+        this.spawnTime = spawnTime
+        this.lane = lane
         ctx = myGameArea.context;
         ctx.fillStyle = color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
 
         this.update = function(){
             ctx = myGameArea.context;
-            ctx.fillStyle = color;
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+
+    //the effect after each note is pressed
+    function Effect(width, height, color, x, y){
+        this.width = width;
+        this.height = height;
+        this.color = color
+        this.x = x
+        this.y = y
+        this.opacity = 0.3
+
+        ctx = myGameArea.context;
+        ctx.fillStyle = this.color.substring(0, this.color.length - 1) + ','+ this.opacity + ')';
+        console.log(this.color.substring(0, this.color.length - 1) + this.opacity + ')')
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+
+        this.update = function(){
+            ctx = myGameArea.context;
+            this.opacity -= 0.01
+            this.width += 1
+            this.height += 1
+
+            ctx.fillStyle = this.color.substring(0, this.color.length - 1) + ','+  this.opacity + ')'
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
     }
 
 
-
+    //game logic 
     function updateGameArea() {
         myGameArea.clear();
         if(notes.length !=0){
-
-            if(!notes[0].hit){
-                notes[0].y += 15;
-                notes[0].update();
-            }
-        
-            if (myGameArea.key && myGameArea.key == 32) {
-                console.log(notes[0].y)
-                notes[0].hit = true
-                notes.shift();
+    
+            //fire a note
+            if(Math.abs(timer - notes[0]) < 0.01){
+                let n = notes.shift();
+                let lane = Math.floor(Math.random() * 4);
+                let note = new Component(30, 30, "#15F5BA", 70 + lane * 100, 10, n, lane)
+                spawned_notes.push(note)
+                
             }
 
-            if(notes[0].y > 500){
-                notes.shift();
+            //handle existing note on canvas
+            if(spawned_notes.length !=0){
+                spawned_notes.forEach((note)=>{
+                    
+                    if(!note.hit){
+                        note.y += 2;
+                    }
+                    //if pass line
+                    if(note.y > myGameArea.target_line_y){
+                        note.color = "red"
+                        past_notes.push(spawned_notes.shift())
+                    } 
+                    note.update();
+                })
+
+                past_notes.forEach(note=>{
+                    note.y += 2;
+                    note.update();
+                })
+
+                //the target_note (which is the lowest note above line)
+                let target_note = spawned_notes[0]
+                
+
+                if (myGameArea.key) { 
+                    
+                    switch(myGameArea.key){
+                        //q, lane 1
+                        case 113:
+                                target_note.hit = target_note.lane == 0
+                                break;
+                        //w, lane 2
+                        case 119:
+                                target_note.hit = target_note.lane == 1
+                                break;
+                        //o, lane 3
+                        case 111:
+                                target_note.hit = target_note.lane == 2
+                                break;
+                        //p, lane 4
+                        case 112:
+                                target_note.hit = target_note.lane == 3
+                                break;        
+                    }    
+                    myGameArea.key = false;  
+                    
+                    //check score (comparing distance between line and note)
+                    if(target_note.hit){
+                        let _x = target_note.x
+                        let _y = target_note.y;
+                        let dist = Math.abs(_y-target_line_y)
+                        if(dist<20){
+                            console.log("good")
+                            effects.push(new Effect(40,40,"rgb(21, 245, 186)",_x,_y))
+                        
+                        }
+                        if(dist>20 && dist<40){
+                            console.log("meh")
+                            effects.push(new Effect(40,40,"rgb(255, 244, 85)",_x,_y))
+                        }
+                        if(dist>40){
+                            console.log("bad")
+                            effects.push(new Effect(40,40,"rgb(255, 32, 78)",_x,_y))
+                        }
+                        
+                        spawned_notes.shift();      
+                    }
+
+                }
+                
+                //remove notes out of canvas
+                if(target_note.y > 500){
+                    spawned_notes.shift();
+                }
             }
-            
+
+            effects.forEach((effect)=>{
+                effect.update()
+            })
         }
 
         target_line.update()
@@ -78,26 +203,37 @@
 
     var myGameArea = {
         canvas : document.createElement("canvas"),
-        start : function() {
+        startButton : document.createElement("button"),
+        song: new Audio("Bonetrousle.mp3"),
+
+        
+        
+        init : function(){
+            
             this.canvas.width = 500;
             this.canvas.height = 500;
             this.context = this.canvas.getContext("2d");
-            document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-
-            this.interval = setInterval(updateGameArea, 20);
-
-            window.addEventListener('keydown', function (e) {
+            document.body.append(this.canvas);
+            this.target_line_y = 400;
+            target_line = new Component(500, 3, "#F0F3FF", 0, this.target_line_y);
+            window.addEventListener('keypress', function (e) {
                 myGameArea.key = e.keyCode;
             })
-            window.addEventListener('keyup', function (e) {
-                myGameArea.key = false;
-            })
-            
+
+            this.startButton.innerHTML = "Start"
+            this.startButton.addEventListener("click",startGame)
+            document.body.append(this.startButton)
+
+        },
+        
+        start : function() {
+            this.interval = setInterval(updateGameArea, 10);
+            this.song.play()
         },
         clear : function() {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
     }
-    startGame()
+    myGameArea.init()
  </script>
 </html>
