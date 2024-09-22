@@ -20,16 +20,22 @@
     clock.classList.add('clock');
     body.appendChild(clock);
     let playing = false;
+    let noteBeginnings = []
+    for (let index = 0; index < noteTimes.length; index = + 2) {
+        noteBeginnings[index - 1] = noteTimes[index];
+    }
+
     function regKey(e) {
         if (e.code == "Space") {
             if (!playing) {
                 let noteNumber = 0;
                 function countUp() {
-                    if (noteNumber < noteTimes.length){
-                    if (noteTimes[noteNumber] == (Math.round(((song.currentTime * 100))) / 100) || noteTimes[noteNumber] == ((Math.round(((song.currentTime * 100))) / 100) + 0.01) || noteTimes[noteNumber] == ((Math.round(((song.currentTime * 100))) / 100) - 0.01)) {
-                        clock.innerHTML = ("Hit note: " + (Math.round(song.currentTime*100)/100) + "/" + noteTimes[noteNumber]);
-                        noteNumber = noteNumber + 2;
-                    }}
+                    if (noteNumber < noteTimes.length) {
+                        if (noteTimes[noteNumber] == (Math.round(((song.currentTime * 100))) / 100) || noteTimes[noteNumber] == ((Math.round(((song.currentTime * 100))) / 100) + 0.01) || noteTimes[noteNumber] == ((Math.round(((song.currentTime * 100))) / 100) - 0.01)) {
+                            clock.innerHTML = ("Hit note: " + (Math.round(song.currentTime * 100) / 100) + "/" + noteTimes[noteNumber]);
+                            noteNumber = noteNumber + 2;
+                        }
+                    }
                     console.log(noteNumber);
                 }
                 song.play();

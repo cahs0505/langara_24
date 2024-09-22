@@ -1,0 +1,75 @@
+/* Global styling for the body */
+body {
+    font-family: 'Noto Sans', sans-serif; 
+    background-color: #1e1e2f; 
+    color: #ffffff; 
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height */
+    flex-direction: column;
+    background-image: url('stage.png');
+    background-size: cover; /* This makes the background cover the entire page */
+    background-position: center; /* This centers the image */
+    background-repeat: no-repeat; /* This prevents the image from repeating */
+}
+
+/* Welcome message styling */
+.welcome-message {
+    font-size: 2em; /* Larger text for the welcome message */
+    margin-bottom: 20px; /* Space below the message */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Adds a soft shadow for a glowing effect */
+    background: rgba(0, 0, 0, 0.5); /* Transparent black background behind the text */
+    padding: 20px; /* Padding for spacing */
+    border-radius: 10px; /* Rounded corners for the message box */
+}
+
+/* Highscore text styling */
+.highscore {
+    font-size: 1.5em; 
+    color: #ffcc00; /* Golden yellow color to highlight the high score */
+    font-weight: bold;
+}
+
+/* Button styling */
+button {
+    background-color: #673ab7; 
+    color: white; 
+    padding: 15px 30px;
+    font-size: 1.5em;
+    border-radius: 10px; 
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-top: 30px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); 
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #673ab7; 
+    transform: translateY(-5px); 
+}
+button.back {
+    position: absolute;
+    bottom: 40px;    
+    left: 20px;   
+    padding: 10px 20px; 
+    background-color: #673ab7;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Verdana', sans-serif;
+}
+
+button.back:hover {
+    background-color: #7e57c2;
+}
+
+button.back:active {
+    background-color: #512da8;
+    transform: scale(0.95);
+}

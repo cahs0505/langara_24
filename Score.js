@@ -96,7 +96,7 @@ function executeProgram(){
         stopProgram(e.keyCode = 69);
         ctx.clearRect(0,0, canvas.width, canvas.height);
         ctx.font="90pt Comic Sans MS";
-        ctx.fillText("You Loose",960, 540);
+        ctx.fillText("You Lose",960, 540);
     }
     if((Date.now()-startTime)/1000 == songLength){
         
@@ -105,31 +105,31 @@ function executeProgram(){
             stopProgram(e.keyCode = 69);
             ctx.clearRect(0,0, canvas.width, canvas.height);
             ctx.font="90pt Comic Sans MS";
-            ctx.fillText("Congragulations, You earned a D rank, you have hit "+count+"/197 notes",960, 540);
+            ctx.fillText("Congratulations, You earned a D rank, you have hit "+count+"/197 notes",960, 540);
         }
         else if (score < 60){
             stopProgram(e.keyCode = 69);
             ctx.clearRect(0,0, canvas.width, canvas.height);
             ctx.font="90pt Comic Sans MS";
-            ctx.fillText("Congragulations, You earned a C rank, you have hit "+count+"/197 notes",960, 540);       
+            ctx.fillText("Congratulations, You earned a C rank, you have hit "+count+"/197 notes",960, 540);       
         }
         else if (score < 80){
             stopProgram(e.keyCode = 69);
             ctx.clearRect(0,0, canvas.width, canvas.height);
             ctx.font="90pt Comic Sans MS";
-            ctx.fillText("Congragulations, You earned a B rank, you have hit "+count+"/197 notes",960, 540);
+            ctx.fillText("Congratulations, You earned a B rank, you have hit "+count+"/197 notes",960, 540);
         }
         else if (score < 100){
             stopProgram(e.keyCode = 69);
             ctx.clearRect(0,0, canvas.width, canvas.height);
             ctx.font="90pt Comic Sans MS";
-            ctx.fillText("Congragulations, You earned a A rank, you have hit "+count+"/197 notes",960, 540);
+            ctx.fillText("Congratulations, You earned a A rank, you have hit "+count+"/197 notes",960, 540);
         }
         else{
             stopProgram(e.keyCode = 69);
             ctx.clearRect(0,0, canvas.width, canvas.height);
             ctx.font="50pt Comic Sans MS";
-            ctx.fillText("Congragulations, You earned a S rank, Flawless Score",960, 540);
+            ctx.fillText("Congratulations, You earned a S rank, Flawless Score",960, 540);
         }
     }
 }
