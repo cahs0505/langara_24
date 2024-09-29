@@ -25,22 +25,28 @@
 <script>
     countTotal = 0;
 
-    //Animation.js
+    
 
     (() => {
+        let host = "/files/"
         let body = document.querySelector("body");
+        
         console.log("Running IFFE.");
         let noteTimes;
-        let noteBeginnings = [];
+        let noteBeginnings = []
         let songList = ["Bonetrousle", "Ghost_Fight", "Spooktune"];
+
+        //default: Bonetrousle
         let songTitle = songList[0]
-        let song = new Audio(songTitle + ".mp3");
+        let song = new Audio(host + songTitle + ".mp3");
+
         let songSelector = document.createElement("div");
         let file;
         let txt;
+
         async function getFile() {
 
-            file = await fetch(songTitle + "_map.txt");
+            file = await fetch(host + songTitle + "_map.txt");
             txt = await file.text();
             noteTimes = txt.split(/[\r\t\n]/);
             noteTimes = noteTimes.filter(function (e) { return e != "" });
@@ -58,10 +64,8 @@
             btn.innerHTML = songList[index];
             btn.addEventListener("click", function () {
                 songTitle = songList[index];
-                song = new Audio(songTitle + ".mp3");
-                console.log(song);
+                song = new Audio(host + songTitle + ".mp3");
                 getFile();
-                console.log(file);
                 setSpeed();
             });
             songSelector.appendChild(btn);
@@ -69,7 +73,6 @@
 
         getFile();
         song.volume = 0.3;
-        // song.play();
         let clock = document.createElement("span");
 
 
@@ -97,18 +100,14 @@
         }
 
 
-        window.onload = () => {
 
-        }
-
-
-        //End of Animation.js
         started = false;
         function startGame() {
             let state;
             if (!started) {
+
                 started = true;
-                //game timer, used to sync upeveryting
+                //game timer, used to sync up everyting
                 timer = 0.0;
                 setInterval(() => {
                     timer += 0.01;
