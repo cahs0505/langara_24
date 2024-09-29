@@ -15,7 +15,8 @@ git clone https://github.com/cahs0505/langara_24.git             //To clone the 
 
 git checkout post_hackathon                                      //To work on the current branch
 
-npm install package                                              //To install all required packages (You can see them in package.json)
+npm install package                                              //To install all required packages
+                                                                  (You can see them in package.json)
 
 npm run dev                                                      //Run locally
 (Alternatively: node index.js)
