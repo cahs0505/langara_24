@@ -1,7 +1,11 @@
 This is a new branch after hackathon
 
-I used Node.js and Express.js to host the game.
-Also used MongoDB Atlas for database, which stores the files.
+I used Node.js and Express.js as a server;
+and MongoDB Atlas for database, which stores the files.
+
+
+Also hosted the app on Render(https://render.com/):
+https://langara-24.onrender.com/game.html
 
 
 To run the app locally:
