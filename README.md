@@ -1,7 +1,7 @@
 This is a new branch after hackathon
 
 I used Node.js and Express.js to host the game.
-Also used MongoDB Atlas for database, storing the files.
+Also used MongoDB Atlas for database, which stores the files.
 
 
 
