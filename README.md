@@ -4,10 +4,11 @@ I used Node.js and Express.js to host the game.
 Also used MongoDB Atlas for database, which stores the files.
 
 
+To run the app locally:
 
-1. Install Node.js in your own machine (https://nodejs.org/), and Git
+1. Install Node.js in your own machine (https://nodejs.org/), and obviously Git(https://git-scm.com/downloads)
 
-2. To run the app locally, run:
+2. Run:
    
 ```
 git clone https://github.com/cahs0505/langara_24.git  
@@ -20,3 +21,4 @@ npm run dev
 (Alternatively: node index.js)
 
 ```
+
