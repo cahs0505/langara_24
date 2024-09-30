@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        body {
+            background-image: url('https://i.pinimg.com/originals/25/fb/a8/25fba81675f3b5afbbe6f69b0f9c7b56.gif');
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        canvas {
+            border: 1px solid #d3d3d3;
+            background-color: #211951;
+        }
+    </style>
+    <title>Project Rhythm</title>
+</head>
+
+<body>
+</body>
+
+<script>
+    countTotal = 0;
+
+    
+
+    (() => {
+        let host = "/files/"
+        let body = document.querySelector("body");
+        
+        console.log("Running IFFE.");
+        let noteTimes;
+        let noteBeginnings = []
+        let songList = ["Bonetrousle", "Ghost_Fight", "Spooktune"];
+
+        //default: Bonetrousle
+        let songTitle = songList[0]
+        let song = new Audio(host + songTitle + ".mp3");
+
+        let songSelector = document.createElement("div");
+        let file;
+        let txt;
+
+        async function getFile() {
+
+            file = await fetch(host + songTitle + "_map.txt");
+            txt = await file.text();
+            noteTimes = txt.split(/[\r\t\n]/);
+            noteTimes = noteTimes.filter(function (e) { return e != "" });
+            for (let index = 0; index < noteTimes.length; index++) {
+                noteTimes[index] = Math.round(noteTimes[index] * 100) / 100;
+            }
+            for (let index = 0; index < noteTimes.length; index = index + 2) {
+                noteBeginnings.push(noteTimes[index]);
+            }
+        };
+
+        document.body.appendChild(songSelector);
+        for (let index = 0; index < songList.length; index++) {
+            let btn = document.createElement("button");
+            btn.innerHTML = songList[index];
+            btn.addEventListener("click", function () {
+                songTitle = songList[index];
+                song = new Audio(host + songTitle + ".mp3");
+                getFile();
+                setSpeed();
+            });
+            songSelector.appendChild(btn);
+        }
+
+        getFile();
+        song.volume = 0.3;
+        let clock = document.createElement("span");
+
+
+        clock.classList.add('clock');
+        body.appendChild(clock);
+        let playing = false;
+        console.log(noteBeginnings)
+
+        function startTimer() {
+
+            if (!playing) {
+                let noteNumber = 0;
+                function countUp() {
+                    if (noteNumber < noteTimes.length) {
+                        if (noteTimes[noteNumber] == (Math.round(((song.currentTime * 100))) / 100) || noteTimes[noteNumber] == ((Math.round(((song.currentTime * 100))) / 100) + 0.01) || noteTimes[noteNumber] == ((Math.round(((song.currentTime * 100))) / 100) - 0.01)) {
+                            // console.log("Hit note: " + (Math.round(song.currentTime * 100) / 100) + "/" + noteTimes[noteNumber]);
+                            noteNumber = noteNumber + 2;
+                        }
+                    }
+                }
+                song.play();
+                let timer = setInterval(countUp, 1);
+                playing = true;
+            }
+        }
+
+
+
+        started = false;
+        function startGame() {
+            let state;
+            if (!started) {
+
+                started = true;
+                //game timer, used to sync up everyting
+                timer = 0.0;
+                setInterval(() => {
+                    timer += 0.01;
+                }, 10)
+
+                //game data
+                notes = noteBeginnings;
+                notes.forEach((note) => {
+                    note -= 0.3;
+                })
+                total_note_numbers = notes.length
+                count = 0;
+                spawned_notes = []
+                past_notes = []
+                effects = []
+                target_line_y = 400
+
+
+                myGameArea.start();
+
+            } else if (started) {
+                window.location.reload();
+            }
+        }
+        function endGame(state) {
+            clearInterval();
+            console.log("end")
+            song.pause();
+            clearInterval(myGameArea.interval)
+            if (state == "fail") {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.font = "90pt Comic Sans MS";
+                ctx.fillText("You lose", 250,);
+
+            }
+            if (state == "win") {
+                let score = ((count + 35) / (noteBeginnings.length + 35)) * 100;
+                if (score < 40) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.font = "90pt Comic Sans MS";
+                    ctx.fillText("Congratulations, You earned a D rank, you have hit " + count + "/ " + noteBeginnings.length + " notes", canvas.width / 2, canvas.height / 2);
+                }
+                else if (score < 60) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.font = "90pt Comic Sans MS";
+                    ctx.fillText("Congratulations, You earned a C rank, you have hit " + count + "/ " + noteBeginnings.length + " notes", canvas.width / 2, canvas.height / 2);
+                }
+                else if (score < 80) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.font = "90pt Comic Sans MS";
+                    ctx.fillText("Congratulations, You earned a B rank, you have hit " + count + "/" + noteBeginnings.length + " notes", canvas.width / 2, canvas.height / 2);
+                }
+                else if (score < 100) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.font = "90pt Comic Sans MS";
+                    ctx.fillText("Congratulations, You earned a A rank, you have hit " + count + "/ " + noteBeginnings.length + " notes", canvas.width / 2, canvas.height / 2);
+                }
+                else {
+                    clearInterval(myGameArea.interval);
+                    ctx.font = "50pt Comic Sans MS";
+                    ctx.fillText("Congratulations, You earned a S rank, Flawless Score", canvas.width / 2, canvas.height / 2);
+                }
+            }
+        }
+        //the actual note
+        function setSpeed(songTitle) {
+            if (songTitle == "Bonetrousle") {
+                return 7.5
+            }
+            if (songTitle == "Ghost_Fight") {
+                return 5;
+            }
+            if (songTitle == "Spooktune") {
+                return 8;
+            }
+        }
+        function Component(width, height, color, x, y, spawnTime, lane, songTitle) {
+            this.width = width;
+            this.height = height;
+            this.speed = setSpeed(songTitle);
+            this.color = color
+            this.x = x;
+            this.y = y;
+            this.hit = false;
+            this.spawnTime = spawnTime;
+            this.lane = lane;
+            ctx = myGameArea.context;
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+
+            this.update = function () {
+                ctx = myGameArea.context;
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        }
+
+        //the effect after each note is pressed
+        function Effect(width, height, color, x, y) {
+            this.width = width;
+            this.height = height;
+            this.color = color
+            this.x = x
+            this.y = y
+            this.opacity = 0.3
+
+            ctx = myGameArea.context;
+            ctx.fillStyle = this.color.substring(0, this.color.length - 1) + ',' + this.opacity + ')';
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+
+            this.update = function () {
+                ctx = myGameArea.context;
+                this.opacity -= 0.01
+                this.width += 1
+                this.height += 1
+
+                ctx.fillStyle = this.color.substring(0, this.color.length - 1) + ',' + this.opacity + ')'
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        }
+
+        //score board 
+        function Score(count) {
+            this.count = count
+            ctx = myGameArea.context;
+            ctx.font = "20px Arial";
+            text = "Your Score: " + count
+            ctx.fillText(text, 5, 40);
+            this.update = function (count) {
+                ctx = myGameArea.context;
+                ctx.font = "20px Arial";
+                text = "Your Score: " + count
+                ctx.fillText(text, 5, 40);
+            }
+        }
+
+        //bottom text
+        function Text(text, x, y, size) {
+            ctx = myGameArea.context;
+            ctx.font = size + " Arial"
+
+            ctx.fillText(text, x, y);
+
+            this.update = function (count) {
+                ctx = myGameArea.context;
+                ctx.font = size + " Arial";
+                ctx.fillText(text, x, y);
+            }
+        }
+
+
+        //game logic 
+        function updateGameArea() {
+            console.log(count)
+            myGameArea.clear();
+            if (notes.length != 0) {
+
+                //fire a note
+                if (Math.abs(timer - notes[0]) < 0.01) {
+                    let n = notes.shift();
+                    let lane = Math.floor(Math.random() * 4);
+                    let note = new Component(40, 40, "#F0F3FF", 70 + lane * 100, 10, n, lane, songTitle);
+                    spawned_notes.push(note);
+                    startTimer();
+                }
+
+                //handle existing note on canvas
+                if (spawned_notes.length != 0) {
+                    spawned_notes.forEach((note) => {
+
+                        if (!note.hit) {
+                            note.y += note.speed;
+                        }
+                        //if pass line
+                        if (note.y > myGameArea.target_line_y) {
+                            note.color = "red"
+                            past_notes.push(spawned_notes.shift())
+                            count--;
+                        }
+
+                        note.update();
+                    })
+
+
+                    //the target_note (which is the lowest note above line)
+                    let target_note = spawned_notes[0]
+
+
+                    if (myGameArea.key) {
+
+                        switch (myGameArea.key) {
+                            //q, lane 1
+                            case 113:
+                                target_note.hit = target_note.lane == 0
+                                break;
+                            //w, lane 2
+                            case 119:
+                                target_note.hit = target_note.lane == 1
+                                break;
+                            //o, lane 3
+                            case 111:
+                                target_note.hit = target_note.lane == 2
+                                break;
+                            //p, lane 4
+                            case 112:
+                                target_note.hit = target_note.lane == 3
+                                break;
+                        }
+                        myGameArea.key = false;
+
+                        //check score (comparing distance between line and note)
+                        if (target_note.hit) {
+                            let _x = target_note.x
+                            let _y = target_note.y;
+
+                            let dist = Math.abs(_y - target_line_y)
+                            if (dist < 35) {
+                                count++
+                                countTotal++
+                                effects.push(new Effect(40, 40, "rgb(21, 245, 186)", _x, _y))
+                            }
+                            if (dist > 35 && dist < myGameArea.easy_line_y) {
+                                countTotal++
+                                effects.push(new Effect(40, 40, "rgb(255, 244, 85)", _x, _y))
+                            }
+                            if (dist > myGameArea.easy_line_y) {
+                                count--
+                                effects.push(new Effect(40, 40, "rgb(255, 32, 78)", _x, _y))
+                            }
+
+                            spawned_notes.shift();
+                        }
+
+                    }
+
+                }
+
+                if (past_notes.length != 0) {
+                    past_notes.forEach(note => {
+                        note.y += 2;
+                        note.update();
+                    })
+                }
+
+                if (count == -noteBeginnings.length / 2) {
+                    console.log("end")
+                    song.pause();
+                    clearInterval(myGameArea.interval)
+                    myGameArea.message = new Text("Gameover!", 100, 250, "60px")
+                    //See "endGame()"
+                    // endGame("fail");
+                }
+
+                effects.forEach((effect) => {
+                    effect.update()
+                })
+
+
+
+            }
+
+            target_line.update()
+            myGameArea.easy_line.update()
+            myGameArea.score.update(count)
+            myGameArea.q.update()
+            myGameArea.w.update()
+            myGameArea.o.update()
+            myGameArea.p.update()
+
+            if (notes.length == 0) {
+                console.log(countTotal.toFixed(2))
+                console.log(total_note_numbers)
+                myGameArea.message = new Text("You won! Percantage accurate: " + (Math.round(countTotal.toFixed(2) / total_note_numbers * 100)) + "%", 60, 250, "25px")
+            }
+
+
+        }
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            startButton: document.createElement("button"),
+            // song: new Audio("Bonetrousle.mp3"),
+
+
+
+            init: function () {
+
+                this.canvas.width = 500;
+                this.canvas.height = 500;
+                this.context = this.canvas.getContext("2d");
+                document.body.append(this.canvas);
+                this.target_line_y = 400;
+                target_line = new Component(500, 3, "#F0F3FF", 0, this.target_line_y);
+
+                this.easy_line_y = 250;
+                this.easy_line = new Component(500, 3, "#F0F3FF", 0, this.easy_line_y);
+                window.addEventListener('keypress', function (e) {
+                    myGameArea.key = e.keyCode;
+                })
+
+                this.startButton.innerHTML = "Start"
+                this.startButton.addEventListener("click", startGame)
+                document.body.append(this.startButton)
+                this.score = new Score(0)
+                this.q = new Text("Q", 60, 470, "60px")
+                this.w = new Text("W", 150, 470, "60px")
+                this.o = new Text("O", 260, 470, "60px")
+                this.p = new Text("P", 360, 470, "60px")
+
+
+
+            },
+            end: function () {
+                if (song.duration == song.currentTime) {
+                    endGame("win");
+                }
+            },
+            start: function () {
+                this.interval = setInterval(updateGameArea, 10);
+                // this.song.play()
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
+        myGameArea.init()
+    })();
+</script>
+
+</html>

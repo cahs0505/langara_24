@@ -6,8 +6,14 @@ function login() {
     window.location.href = "../username/UN.html";
 }
 
+function game(){
+    window.location.href = "/game.html";
+}
+function guest() {
+    window.location.href = "../welcomepage/Welcome.html";
+}
 function quit() {
-    window.close();
+    window.close();                 
 }
 console.log("JavaScript is working!");
 
