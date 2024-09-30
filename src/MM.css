@@ -1,7 +1,8 @@
 /* Background with the GIF */
 body {
     font-family: 'Noto Sans', sans-serif; 
-    background-image: url('https://i.pinimg.com/originals/25/fb/a8/25fba81675f3b5afbbe6f69b0f9c7b56.gif');
+    background-color: #211951;
+    /* background-image: url('https://i.pinimg.com/originals/25/fb/a8/25fba81675f3b5afbbe6f69b0f9c7b56.gif'); */
     background-size: cover;
     background-position: center;
     display: flex;
